@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="财富自由模拟器 - 计算您达到财务自由所需的时间，规划您的财富之路">
+    <meta name="keywords" content="财富自由,被动收入,理财计算器,投资规划">
+    <title>财富自由模拟器 - 规划您的财富之路</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="background-gradient"></div>
+
+    <main class="container">
+        <header class="header">
+            <h1 class="title">
+                <span class="title-icon">💰</span>
+                财富自由模拟器
+                <span class="title-icon">🚀</span>
+            </h1>
+            <p class="subtitle">计算您的财富自由之路 • 被动收入 = 本金 × 收益率</p>
+        </header>
+
+        <section class="input-section">
+            <div class="input-grid">
+                <!-- 本金输入 -->
+                <div class="input-card">
+                    <label class="input-label" for="principal-picker">
+                        <span class="label-icon">🏦</span>
+                        初始本金
+                    </label>
+                    <div class="picker-container" id="principal-container">
+                        <div class="picker-overlay picker-overlay-top"></div>
+                        <div class="picker-selection"></div>
+                        <div class="picker-overlay picker-overlay-bottom"></div>
+                        <div class="picker-scroll" id="principal-picker" data-type="principal"></div>
+                    </div>
+                    <div class="input-value" id="principal-value">1000 万元</div>
+                </div>
+
+                <!-- 年收益率输入 -->
+                <div class="input-card">
+                    <label class="input-label" for="rate-picker">
+                        <span class="label-icon">📈</span>
+                        年收益率
+                    </label>
+                    <div class="picker-container" id="rate-container">
+                        <div class="picker-overlay picker-overlay-top"></div>
+                        <div class="picker-selection"></div>
+                        <div class="picker-overlay picker-overlay-bottom"></div>
+                        <div class="picker-scroll" id="rate-picker" data-type="rate"></div>
+                    </div>
+                    <div class="input-value" id="rate-value">8.0%</div>
+                </div>
+
+                <!-- 月收入输入 -->
+                <div class="input-card">
+                    <label class="input-label" for="income-picker">
+                        <span class="label-icon">💼</span>
+                        当前月收入
+                    </label>
+                    <div class="picker-container" id="income-container">
+                        <div class="picker-overlay picker-overlay-top"></div>
+                        <div class="picker-selection"></div>
+                        <div class="picker-overlay picker-overlay-bottom"></div>
+                        <div class="picker-scroll" id="income-picker" data-type="income"></div>
+                    </div>
+                    <div class="input-value" id="income-value">50,000 元/月</div>
+                </div>
+
+                <!-- 当前月支出输入 -->
+                <div class="input-card">
+                    <label class="input-label" for="current-expense-picker">
+                        <span class="label-icon">💸</span>
+                        当前月支出
+                    </label>
+                    <div class="picker-container" id="current-expense-container">
+                        <div class="picker-overlay picker-overlay-top"></div>
+                        <div class="picker-selection"></div>
+                        <div class="picker-overlay picker-overlay-bottom"></div>
+                        <div class="picker-scroll" id="current-expense-picker" data-type="currentExpense"></div>
+                    </div>
+                    <div class="input-value" id="current-expense-value">5,000 元/月</div>
+                </div>
+
+                <!-- 当前年龄输入 -->
+                <div class="input-card">
+                    <label class="input-label" for="age-picker">
+                        <span class="label-icon">🎂</span>
+                        当前年龄
+                    </label>
+                    <div class="picker-container" id="age-container">
+                        <div class="picker-overlay picker-overlay-top"></div>
+                        <div class="picker-selection"></div>
+                        <div class="picker-overlay picker-overlay-bottom"></div>
+                        <div class="picker-scroll" id="age-picker" data-type="age"></div>
+                    </div>
+                    <div class="input-value" id="age-value">30岁</div>
+                </div>
+
+                <!-- 通货膨胀率输入 -->
+                <div class="input-card">
+                    <label class="input-label" for="inflation-picker">
+                        <span class="label-icon">🎈</span>
+                        通货膨胀率
+                    </label>
+                    <div class="picker-container" id="inflation-container">
+                        <div class="picker-overlay picker-overlay-top"></div>
+                        <div class="picker-selection"></div>
+                        <div class="picker-overlay picker-overlay-bottom"></div>
+                        <div class="picker-scroll" id="inflation-picker" data-type="inflation"></div>
+                    </div>
+                    <div class="input-value" id="inflation-value">3.0%</div>
+                </div>
+            </div>
+
+            <button class="calculate-button" id="calculate-btn">
+                <span class="button-text">生成您的财务自由方案</span>
+                <span class="button-icon">✨</span>
+            </button>
+        </section>
+
+        <section class="result-section" id="result-section" style="display: none;">
+            <div class="result-header">
+                <h2 class="result-title">
+                    <span class="result-icon">🗺️</span>
+                    您的财富自由路线图
+                </h2>
+                <div class="result-summary" id="result-summary">
+                    <div class="summary-item">
+                        <div class="summary-label">初始资产</div>
+                        <div class="summary-value" id="current-principal">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">年收益率</div>
+                        <div class="summary-value" id="current-rate">0%</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">通胀率</div>
+                        <div class="summary-value" id="current-inflation">0%</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">月储蓄</div>
+                        <div class="summary-value" id="current-savings">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-cards" id="result-cards">
+                <!-- 动态生成 8 个档位的卡片 -->
+            </div>
+
+            <div class="chart-section card-fade-in" id="chart-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <span class="section-icon">📈</span>
+                        资产增长趋势 (基于首个目标档位)
+                    </h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+
+            <div class="analysis-section card-fade-in" id="analysis-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <span class="section-icon">📑</span>
+                        逐年财务审计报告
+                    </h3>
+                    <p class="section-subtitle">按名义利率与通胀率动态计算</p>
+                </div>
+                <div class="analysis-table-wrapper">
+                    <table class="analysis-table" id="analysis-table">
+                        <thead>
+                            <tr>
+                                <th>当前年龄</th>
+                                <th>当前本金</th>
+                                <th>月被动收入</th>
+                                <th>达成状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analysis-body">
+                            <!-- 动态填充 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="result-note card-fade-in">
+                <p>💡 <strong>计算说明：</strong>基于实际利率模型，假设投资回报已扣除通胀，因此生活支出和月收入在整个预测期内保持恒定购买力。</p>
+                <p>💡 <strong>财富自由标准：</strong>当实际被动收入足以覆盖当前设定的目标月支出时，即视为达成财务自由。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Built with 💜 for your financial freedom journey</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
